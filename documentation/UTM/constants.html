@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>UTM.constants API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>UTM.constants</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from enum import Enum
+import random
+from utils import getBlockSize, has
+
+BLACK = (0, 0, 0)
+WHITE = (200, 200, 200)
+GRAY = (69, 69, 69)
+RED = (235, 67, 91)
+GREEN = (67, 235, 91)
+BLUE = (100, 30, 245)
+PURPLE = (120, 50, 145)
+ORANGE = (200, 125, 0)
+YELLOW = (200, 200, 0)
+
+color_lookup = {
+    &#34;O&#34;: BLACK, 
+    &#34;@&#34;: GRAY,
+    &#34;&gt;&#34;: RED,
+    &#34;&lt;&#34;: GREEN,
+    &#34;^&#34;: BLUE,
+    &#34;v&#34;: PURPLE
+}
+&#34;&#34;&#34;
+Dictionary mapping symbols to colors, useful for legacy textbased map.
+&#34;&#34;&#34;
+priorityColorMap = {
+    0: YELLOW
+}
+&#34;&#34;&#34;
+Dictionary that will return the color of a drone based on it&#39;s priority. Replaced by priorityImageMap.
+&#34;&#34;&#34;
+
+BLOCK_SIZE = 32
+&#34;&#34;&#34;
+Pixel size of 1 block
+&#34;&#34;&#34;
+MAX_ELEMENTS_IN_BLOCK = 100 
+&#34;&#34;&#34;
+if there are more than 100 elements in a block, the highest ones are not visible
+generally, optimize the simulation to have not more than 4-5 elements a block
+&#34;&#34;&#34;
+
+WINDOW_WIDTH = WINDOW_HEIGHT = 20 * BLOCK_SIZE # TODO: need to make windowing dependent on the map being rendered
+&#34;&#34;&#34;
+Dimension of the window, defaults to 20 Blocks.
+&#34;&#34;&#34;
+class Dimension2D:
+    &#34;&#34;&#34;
+    Represents 2 Dimensional measurements.
+    &#34;&#34;&#34;
+    def __init__(self, width, height):
+        self.width = width
+        &#34;&#34;&#34;
+        Width Dimension.
+        &#34;&#34;&#34;
+        self.height = height
+        &#34;&#34;&#34;
+        Height Dimension.
+        &#34;&#34;&#34;
+
+class Point2D:
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Coordinates.
+    &#34;&#34;&#34;
+    def __init__(self, x, y):
+        self.x = x
+        &#34;&#34;&#34;
+        x coordinate.
+        &#34;&#34;&#34;
+        self.y = y
+        &#34;&#34;&#34;
+        y coordinate.
+        &#34;&#34;&#34;
+
+class Orientation2D(Enum):
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Orientation. Only Supports Standard Orientations (Vertical and Horizontal)
+    &#34;&#34;&#34;
+    HORIZONTAL=&#34;H&#34;
+    VERTICAL=&#34;V&#34;
+
+class RNG:
+    &#34;&#34;&#34;
+    Random Number Generator (Pseudo).
+    Uses built in random generator.
+    Since that generator doesnt have a discrete class but does have a state, this class just stores the state of the rng.
+    &#34;&#34;&#34;
+    def __init__(self, seed):
+        &#34;&#34;&#34;
+        When a new instance is created with a seed, it saves the current state of random, sets random the a new generator with the seed, stores that new state in this class, and restors the current version.
+        &#34;&#34;&#34;
+        self.seed = seed
+        &#34;&#34;&#34;
+        seed of the rng
+        &#34;&#34;&#34;
+        # store global state
+        old_state = random.getstate()
+
+        # create our state
+        random.seed(self.seed)
+        # store our state to return
+        self.rng = random.getstate()
+        &#34;&#34;&#34;
+        Stores the value of random.getstate() for this instance of the rng
+        &#34;&#34;&#34;
+        #restor global state
+        random.setstate(old_state)
+
+    def randint(self, a, b):
+        &#34;&#34;&#34;
+        Functionally identical to random.randint() but with the seed for this instance without affecting the global random generator.
+        &#34;&#34;&#34;
+        # store global state
+        old_state = random.getstate()
+        # create our state
+        random.setstate(self.rng)
+        # store our state to return
+        ret = random.randint(a, b)
+
+        # update our state
+        self.rng = random.getstate()
+        #restor global state
+        random.setstate(old_state)
+        #return our state
+        return ret
+
+class Action2D(Enum):
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Actions. Semantically equal to 2 Dimensional Directions (there is no separate class).
+    &#34;&#34;&#34;
+    NORTH=&#34;N&#34;
+    SOUTH=&#34;S&#34;
+    EAST=&#34;E&#34;
+    WEST=&#34;W&#34;
+    NOP=&#34;O&#34;
+
+    @staticmethod
+    def to_vec(vec):
+        &#34;&#34;&#34;
+        Converts an Action to a Vector that can be thought of as a normal direction vector.
+        &#34;&#34;&#34;
+        __vector_map = {
+            Action2D.NORTH: ( 0, -1),
+            Action2D.SOUTH: ( 0,  1),
+            Action2D.WEST : (-1,  0),
+            Action2D.EAST : ( 1,  0),
+            Action2D.NOP  : ( 0,  0)
+        }
+        return __vector_map[vec]
+
+    _ignore_ = [&#34;RIGHT&#34;, &#34;LEFT&#34;, &#34;REVERSE&#34;]
+
+    RIGHT = dict()
+    LEFT = dict()
+    REVERSE = dict()
+
+Action2D.RIGHT = {
+        Action2D.NORTH: Action2D.EAST,
+        Action2D.EAST: Action2D.SOUTH,
+        Action2D.SOUTH: Action2D.WEST,
+        Action2D.WEST: Action2D.WEST,
+        Action2D.NOP: Action2D.NOP
+    }
+&#34;&#34;&#34;
+Returns the Direction that is equivalent to a RIGHT at the given direction.
+&#34;&#34;&#34;
+
+Action2D.LEFT = dict([(y, x) for x, y in Action2D.RIGHT.items()])
+&#34;&#34;&#34;
+Returns the Direction that is equivalent to a LEFT at the given direction.
+&#34;&#34;&#34;
+
+Action2D.REVERSE = {
+        Action2D.NORTH: Action2D.SOUTH,
+        Action2D.WEST: Action2D.EAST,
+        Action2D.SOUTH: Action2D.NORTH,
+        Action2D.EAST: Action2D.WEST,
+        Action2D.NOP: Action2D.NOP
+    }
+&#34;&#34;&#34;
+Returns the Direction that is equivalent to a REVERSE at the given direction.
+&#34;&#34;&#34;
+
+
+class MovementVector2D:
+    &#34;&#34;&#34;
+    MovementVector2Ds will hold the position and the direction of the object 
+    TODO: Drone direction is it&#39;s next action. we assume for now that changing directions is instantaneous
+    &#34;&#34;&#34;
+
+    def __init__(self, x, y, direction: Action2D):
+        self.x = x
+        &#34;&#34;&#34;
+        x coordinate of the object.
+        &#34;&#34;&#34;
+        self.y = y
+        &#34;&#34;&#34;
+        y cooredinate of the object.
+        &#34;&#34;&#34;
+        self.direction = direction
+        &#34;&#34;&#34;
+        Direction of the object.
+        &#34;&#34;&#34;
+
+    def getCoords(self):
+        &#34;&#34;&#34;
+        Get a Point2D Object representing the coordinate of the object.
+        &#34;&#34;&#34;
+        return Point2D(self.x, self.y)
+
+    def nextMovementVector(self, direction: Action2D):
+        &#34;&#34;&#34;
+        Sets the current Direction to the one provided, then updates the coordinates to move in that direction.
+        Does not update in place, but returns a new MovementVector
+        &#34;&#34;&#34;
+        dx, dy = Action2D.to_vec(direction)
+        return MovementVector2D(self.x + dx, self.y + dy, direction)
+
+
+
+class DroneSimContext:
+    &#34;&#34;&#34;
+    Represents the Information that will be passed into the drone. Can be thought of its memory + its sensed data.
+    &#34;&#34;&#34;
+    def __init__(self, drone, sim_state):
+        self.corridors = sim_state.corridors
+        &#34;&#34;&#34;
+        List of Corridors on the map.
+        &#34;&#34;&#34;
+        self.intersections = sim_state.intersections
+        &#34;&#34;&#34;
+        List of intersections on the map.
+        &#34;&#34;&#34;
+        self.comms_buffer = sim_state.comms.fetch(drone.id)
+        &#34;&#34;&#34;
+        Packets received by the drone
+        &#34;&#34;&#34;
+        self.dispatch = lambda packet: sim_state.comms.dispatch(packet) #todo add typing
+        &#34;&#34;&#34;
+        Callable that the drone can use to dispatch packets into the Communication Fabric.
+        &#34;&#34;&#34; 
+
+    # def has(self, x, y):
+    #     &#34;&#34;&#34;
+    #     Check if a given coordinate falls 
+    #     &#34;&#34;&#34;
+    #     return has(x,y, 0, 0, self.dimension.width, self.dimension.height)
+        
+    def get_containing_corridor(self, x, y):
+        &#34;&#34;&#34;
+        Return the first corridor in the list that the x, y coordinates fall in.
+        &#34;&#34;&#34;
+        for corridor in self.corridors:
+            if corridor.has(x, y):
+                return corridor
+
+    def get_containing_intersection(self, x, y):
+        &#34;&#34;&#34;
+        Return the first intersection in the list that the x, y coordinates fall in.
+        &#34;&#34;&#34;
+        for intersection in self.intersections:
+            if intersection.has(x, y):
+                return intersection</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="UTM.constants.BLOCK_SIZE"><code class="name">var <span class="ident">BLOCK_SIZE</span></code></dt>
+<dd>
+<div class="desc"><p>Pixel size of 1 block</p></div>
+</dd>
+<dt id="UTM.constants.MAX_ELEMENTS_IN_BLOCK"><code class="name">var <span class="ident">MAX_ELEMENTS_IN_BLOCK</span></code></dt>
+<dd>
+<div class="desc"><p>if there are more than 100 elements in a block, the highest ones are not visible
+generally, optimize the simulation to have not more than 4-5 elements a block</p></div>
+</dd>
+<dt id="UTM.constants.color_lookup"><code class="name">var <span class="ident">color_lookup</span></code></dt>
+<dd>
+<div class="desc"><p>Dictionary mapping symbols to colors, useful for legacy textbased map.</p></div>
+</dd>
+<dt id="UTM.constants.priorityColorMap"><code class="name">var <span class="ident">priorityColorMap</span></code></dt>
+<dd>
+<div class="desc"><p>Dictionary that will return the color of a drone based on it's priority. Replaced by priorityImageMap.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="UTM.constants.Action2D"><code class="flex name class">
+<span>class <span class="ident">Action2D</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents 2 Dimensional Actions. Semantically equal to 2 Dimensional Directions (there is no separate class).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Action2D(Enum):
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Actions. Semantically equal to 2 Dimensional Directions (there is no separate class).
+    &#34;&#34;&#34;
+    NORTH=&#34;N&#34;
+    SOUTH=&#34;S&#34;
+    EAST=&#34;E&#34;
+    WEST=&#34;W&#34;
+    NOP=&#34;O&#34;
+
+    @staticmethod
+    def to_vec(vec):
+        &#34;&#34;&#34;
+        Converts an Action to a Vector that can be thought of as a normal direction vector.
+        &#34;&#34;&#34;
+        __vector_map = {
+            Action2D.NORTH: ( 0, -1),
+            Action2D.SOUTH: ( 0,  1),
+            Action2D.WEST : (-1,  0),
+            Action2D.EAST : ( 1,  0),
+            Action2D.NOP  : ( 0,  0)
+        }
+        return __vector_map[vec]
+
+    _ignore_ = [&#34;RIGHT&#34;, &#34;LEFT&#34;, &#34;REVERSE&#34;]
+
+    RIGHT = dict()
+    LEFT = dict()
+    REVERSE = dict()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="UTM.constants.Action2D.EAST"><code class="name">var <span class="ident">EAST</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.LEFT"><code class="name">var <span class="ident">LEFT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.NOP"><code class="name">var <span class="ident">NOP</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.NORTH"><code class="name">var <span class="ident">NORTH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.REVERSE"><code class="name">var <span class="ident">REVERSE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.RIGHT"><code class="name">var <span class="ident">RIGHT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.SOUTH"><code class="name">var <span class="ident">SOUTH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Action2D.WEST"><code class="name">var <span class="ident">WEST</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="UTM.constants.Action2D.to_vec"><code class="name flex">
+<span>def <span class="ident">to_vec</span></span>(<span>vec)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts an Action to a Vector that can be thought of as a normal direction vector.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def to_vec(vec):
+    &#34;&#34;&#34;
+    Converts an Action to a Vector that can be thought of as a normal direction vector.
+    &#34;&#34;&#34;
+    __vector_map = {
+        Action2D.NORTH: ( 0, -1),
+        Action2D.SOUTH: ( 0,  1),
+        Action2D.WEST : (-1,  0),
+        Action2D.EAST : ( 1,  0),
+        Action2D.NOP  : ( 0,  0)
+    }
+    return __vector_map[vec]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.Dimension2D"><code class="flex name class">
+<span>class <span class="ident">Dimension2D</span></span>
+<span>(</span><span>width, height)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents 2 Dimensional measurements.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Dimension2D:
+    &#34;&#34;&#34;
+    Represents 2 Dimensional measurements.
+    &#34;&#34;&#34;
+    def __init__(self, width, height):
+        self.width = width
+        &#34;&#34;&#34;
+        Width Dimension.
+        &#34;&#34;&#34;
+        self.height = height
+        &#34;&#34;&#34;
+        Height Dimension.
+        &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="UTM.constants.Dimension2D.height"><code class="name">var <span class="ident">height</span></code></dt>
+<dd>
+<div class="desc"><p>Height Dimension.</p></div>
+</dd>
+<dt id="UTM.constants.Dimension2D.width"><code class="name">var <span class="ident">width</span></code></dt>
+<dd>
+<div class="desc"><p>Width Dimension.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.DroneSimContext"><code class="flex name class">
+<span>class <span class="ident">DroneSimContext</span></span>
+<span>(</span><span>drone, sim_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the Information that will be passed into the drone. Can be thought of its memory + its sensed data.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DroneSimContext:
+    &#34;&#34;&#34;
+    Represents the Information that will be passed into the drone. Can be thought of its memory + its sensed data.
+    &#34;&#34;&#34;
+    def __init__(self, drone, sim_state):
+        self.corridors = sim_state.corridors
+        &#34;&#34;&#34;
+        List of Corridors on the map.
+        &#34;&#34;&#34;
+        self.intersections = sim_state.intersections
+        &#34;&#34;&#34;
+        List of intersections on the map.
+        &#34;&#34;&#34;
+        self.comms_buffer = sim_state.comms.fetch(drone.id)
+        &#34;&#34;&#34;
+        Packets received by the drone
+        &#34;&#34;&#34;
+        self.dispatch = lambda packet: sim_state.comms.dispatch(packet) #todo add typing
+        &#34;&#34;&#34;
+        Callable that the drone can use to dispatch packets into the Communication Fabric.
+        &#34;&#34;&#34; 
+
+    # def has(self, x, y):
+    #     &#34;&#34;&#34;
+    #     Check if a given coordinate falls 
+    #     &#34;&#34;&#34;
+    #     return has(x,y, 0, 0, self.dimension.width, self.dimension.height)
+        
+    def get_containing_corridor(self, x, y):
+        &#34;&#34;&#34;
+        Return the first corridor in the list that the x, y coordinates fall in.
+        &#34;&#34;&#34;
+        for corridor in self.corridors:
+            if corridor.has(x, y):
+                return corridor
+
+    def get_containing_intersection(self, x, y):
+        &#34;&#34;&#34;
+        Return the first intersection in the list that the x, y coordinates fall in.
+        &#34;&#34;&#34;
+        for intersection in self.intersections:
+            if intersection.has(x, y):
+                return intersection</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="UTM.constants.DroneSimContext.comms_buffer"><code class="name">var <span class="ident">comms_buffer</span></code></dt>
+<dd>
+<div class="desc"><p>Packets received by the drone</p></div>
+</dd>
+<dt id="UTM.constants.DroneSimContext.corridors"><code class="name">var <span class="ident">corridors</span></code></dt>
+<dd>
+<div class="desc"><p>List of Corridors on the map.</p></div>
+</dd>
+<dt id="UTM.constants.DroneSimContext.dispatch"><code class="name">var <span class="ident">dispatch</span></code></dt>
+<dd>
+<div class="desc"><p>Callable that the drone can use to dispatch packets into the Communication Fabric.</p></div>
+</dd>
+<dt id="UTM.constants.DroneSimContext.intersections"><code class="name">var <span class="ident">intersections</span></code></dt>
+<dd>
+<div class="desc"><p>List of intersections on the map.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="UTM.constants.DroneSimContext.get_containing_corridor"><code class="name flex">
+<span>def <span class="ident">get_containing_corridor</span></span>(<span>self, x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the first corridor in the list that the x, y coordinates fall in.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_containing_corridor(self, x, y):
+    &#34;&#34;&#34;
+    Return the first corridor in the list that the x, y coordinates fall in.
+    &#34;&#34;&#34;
+    for corridor in self.corridors:
+        if corridor.has(x, y):
+            return corridor</code></pre>
+</details>
+</dd>
+<dt id="UTM.constants.DroneSimContext.get_containing_intersection"><code class="name flex">
+<span>def <span class="ident">get_containing_intersection</span></span>(<span>self, x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the first intersection in the list that the x, y coordinates fall in.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_containing_intersection(self, x, y):
+    &#34;&#34;&#34;
+    Return the first intersection in the list that the x, y coordinates fall in.
+    &#34;&#34;&#34;
+    for intersection in self.intersections:
+        if intersection.has(x, y):
+            return intersection</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.MovementVector2D"><code class="flex name class">
+<span>class <span class="ident">MovementVector2D</span></span>
+<span>(</span><span>x, y, direction: <a title="UTM.constants.Action2D" href="#UTM.constants.Action2D">Action2D</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MovementVector2Ds will hold the position and the direction of the object
+TODO: Drone direction is it's next action. we assume for now that changing directions is instantaneous</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MovementVector2D:
+    &#34;&#34;&#34;
+    MovementVector2Ds will hold the position and the direction of the object 
+    TODO: Drone direction is it&#39;s next action. we assume for now that changing directions is instantaneous
+    &#34;&#34;&#34;
+
+    def __init__(self, x, y, direction: Action2D):
+        self.x = x
+        &#34;&#34;&#34;
+        x coordinate of the object.
+        &#34;&#34;&#34;
+        self.y = y
+        &#34;&#34;&#34;
+        y cooredinate of the object.
+        &#34;&#34;&#34;
+        self.direction = direction
+        &#34;&#34;&#34;
+        Direction of the object.
+        &#34;&#34;&#34;
+
+    def getCoords(self):
+        &#34;&#34;&#34;
+        Get a Point2D Object representing the coordinate of the object.
+        &#34;&#34;&#34;
+        return Point2D(self.x, self.y)
+
+    def nextMovementVector(self, direction: Action2D):
+        &#34;&#34;&#34;
+        Sets the current Direction to the one provided, then updates the coordinates to move in that direction.
+        Does not update in place, but returns a new MovementVector
+        &#34;&#34;&#34;
+        dx, dy = Action2D.to_vec(direction)
+        return MovementVector2D(self.x + dx, self.y + dy, direction)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="UTM.constants.MovementVector2D.direction"><code class="name">var <span class="ident">direction</span></code></dt>
+<dd>
+<div class="desc"><p>Direction of the object.</p></div>
+</dd>
+<dt id="UTM.constants.MovementVector2D.x"><code class="name">var <span class="ident">x</span></code></dt>
+<dd>
+<div class="desc"><p>x coordinate of the object.</p></div>
+</dd>
+<dt id="UTM.constants.MovementVector2D.y"><code class="name">var <span class="ident">y</span></code></dt>
+<dd>
+<div class="desc"><p>y cooredinate of the object.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="UTM.constants.MovementVector2D.getCoords"><code class="name flex">
+<span>def <span class="ident">getCoords</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a Point2D Object representing the coordinate of the object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def getCoords(self):
+    &#34;&#34;&#34;
+    Get a Point2D Object representing the coordinate of the object.
+    &#34;&#34;&#34;
+    return Point2D(self.x, self.y)</code></pre>
+</details>
+</dd>
+<dt id="UTM.constants.MovementVector2D.nextMovementVector"><code class="name flex">
+<span>def <span class="ident">nextMovementVector</span></span>(<span>self, direction: <a title="UTM.constants.Action2D" href="#UTM.constants.Action2D">Action2D</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the current Direction to the one provided, then updates the coordinates to move in that direction.
+Does not update in place, but returns a new MovementVector</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nextMovementVector(self, direction: Action2D):
+    &#34;&#34;&#34;
+    Sets the current Direction to the one provided, then updates the coordinates to move in that direction.
+    Does not update in place, but returns a new MovementVector
+    &#34;&#34;&#34;
+    dx, dy = Action2D.to_vec(direction)
+    return MovementVector2D(self.x + dx, self.y + dy, direction)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.Orientation2D"><code class="flex name class">
+<span>class <span class="ident">Orientation2D</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents 2 Dimensional Orientation. Only Supports Standard Orientations (Vertical and Horizontal)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Orientation2D(Enum):
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Orientation. Only Supports Standard Orientations (Vertical and Horizontal)
+    &#34;&#34;&#34;
+    HORIZONTAL=&#34;H&#34;
+    VERTICAL=&#34;V&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="UTM.constants.Orientation2D.HORIZONTAL"><code class="name">var <span class="ident">HORIZONTAL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="UTM.constants.Orientation2D.VERTICAL"><code class="name">var <span class="ident">VERTICAL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.Point2D"><code class="flex name class">
+<span>class <span class="ident">Point2D</span></span>
+<span>(</span><span>x, y)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents 2 Dimensional Coordinates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Point2D:
+    &#34;&#34;&#34;
+    Represents 2 Dimensional Coordinates.
+    &#34;&#34;&#34;
+    def __init__(self, x, y):
+        self.x = x
+        &#34;&#34;&#34;
+        x coordinate.
+        &#34;&#34;&#34;
+        self.y = y
+        &#34;&#34;&#34;
+        y coordinate.
+        &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="UTM.constants.Point2D.x"><code class="name">var <span class="ident">x</span></code></dt>
+<dd>
+<div class="desc"><p>x coordinate.</p></div>
+</dd>
+<dt id="UTM.constants.Point2D.y"><code class="name">var <span class="ident">y</span></code></dt>
+<dd>
+<div class="desc"><p>y coordinate.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="UTM.constants.RNG"><code class="flex name class">
+<span>class <span class="ident">RNG</span></span>
+<span>(</span><span>seed)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Random Number Generator (Pseudo).
+Uses built in random generator.
+Since that generator doesnt have a discrete class but does have a state, this class just stores the state of the rng.</p>
+<p>When a new instance is created with a seed, it saves the current state of random, sets random the a new generator with the seed, stores that new state in this class, and restors the current version.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RNG:
+    &#34;&#34;&#34;
+    Random Number Generator (Pseudo).
+    Uses built in random generator.
+    Since that generator doesnt have a discrete class but does have a state, this class just stores the state of the rng.
+    &#34;&#34;&#34;
+    def __init__(self, seed):
+        &#34;&#34;&#34;
+        When a new instance is created with a seed, it saves the current state of random, sets random the a new generator with the seed, stores that new state in this class, and restors the current version.
+        &#34;&#34;&#34;
+        self.seed = seed
+        &#34;&#34;&#34;
+        seed of the rng
+        &#34;&#34;&#34;
+        # store global state
+        old_state = random.getstate()
+
+        # create our state
+        random.seed(self.seed)
+        # store our state to return
+        self.rng = random.getstate()
+        &#34;&#34;&#34;
+        Stores the value of random.getstate() for this instance of the rng
+        &#34;&#34;&#34;
+        #restor global state
+        random.setstate(old_state)
+
+    def randint(self, a, b):
+        &#34;&#34;&#34;
+        Functionally identical to random.randint() but with the seed for this instance without affecting the global random generator.
+        &#34;&#34;&#34;
+        # store global state
+        old_state = random.getstate()
+        # create our state
+        random.setstate(self.rng)
+        # store our state to return
+        ret = random.randint(a, b)
+
+        # update our state
+        self.rng = random.getstate()
+        #restor global state
+        random.setstate(old_state)
+        #return our state
+        return ret</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="UTM.constants.RNG.rng"><code class="name">var <span class="ident">rng</span></code></dt>
+<dd>
+<div class="desc"><p>Stores the value of random.getstate() for this instance of the rng</p></div>
+</dd>
+<dt id="UTM.constants.RNG.seed"><code class="name">var <span class="ident">seed</span></code></dt>
+<dd>
+<div class="desc"><p>seed of the rng</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="UTM.constants.RNG.randint"><code class="name flex">
+<span>def <span class="ident">randint</span></span>(<span>self, a, b)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Functionally identical to random.randint() but with the seed for this instance without affecting the global random generator.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def randint(self, a, b):
+    &#34;&#34;&#34;
+    Functionally identical to random.randint() but with the seed for this instance without affecting the global random generator.
+    &#34;&#34;&#34;
+    # store global state
+    old_state = random.getstate()
+    # create our state
+    random.setstate(self.rng)
+    # store our state to return
+    ret = random.randint(a, b)
+
+    # update our state
+    self.rng = random.getstate()
+    #restor global state
+    random.setstate(old_state)
+    #return our state
+    return ret</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="UTM" href="index.html">UTM</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="UTM.constants.BLOCK_SIZE" href="#UTM.constants.BLOCK_SIZE">BLOCK_SIZE</a></code></li>
+<li><code><a title="UTM.constants.MAX_ELEMENTS_IN_BLOCK" href="#UTM.constants.MAX_ELEMENTS_IN_BLOCK">MAX_ELEMENTS_IN_BLOCK</a></code></li>
+<li><code><a title="UTM.constants.color_lookup" href="#UTM.constants.color_lookup">color_lookup</a></code></li>
+<li><code><a title="UTM.constants.priorityColorMap" href="#UTM.constants.priorityColorMap">priorityColorMap</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="UTM.constants.Action2D" href="#UTM.constants.Action2D">Action2D</a></code></h4>
+<ul class="two-column">
+<li><code><a title="UTM.constants.Action2D.EAST" href="#UTM.constants.Action2D.EAST">EAST</a></code></li>
+<li><code><a title="UTM.constants.Action2D.LEFT" href="#UTM.constants.Action2D.LEFT">LEFT</a></code></li>
+<li><code><a title="UTM.constants.Action2D.NOP" href="#UTM.constants.Action2D.NOP">NOP</a></code></li>
+<li><code><a title="UTM.constants.Action2D.NORTH" href="#UTM.constants.Action2D.NORTH">NORTH</a></code></li>
+<li><code><a title="UTM.constants.Action2D.REVERSE" href="#UTM.constants.Action2D.REVERSE">REVERSE</a></code></li>
+<li><code><a title="UTM.constants.Action2D.RIGHT" href="#UTM.constants.Action2D.RIGHT">RIGHT</a></code></li>
+<li><code><a title="UTM.constants.Action2D.SOUTH" href="#UTM.constants.Action2D.SOUTH">SOUTH</a></code></li>
+<li><code><a title="UTM.constants.Action2D.WEST" href="#UTM.constants.Action2D.WEST">WEST</a></code></li>
+<li><code><a title="UTM.constants.Action2D.to_vec" href="#UTM.constants.Action2D.to_vec">to_vec</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.Dimension2D" href="#UTM.constants.Dimension2D">Dimension2D</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.Dimension2D.height" href="#UTM.constants.Dimension2D.height">height</a></code></li>
+<li><code><a title="UTM.constants.Dimension2D.width" href="#UTM.constants.Dimension2D.width">width</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.DroneSimContext" href="#UTM.constants.DroneSimContext">DroneSimContext</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.DroneSimContext.comms_buffer" href="#UTM.constants.DroneSimContext.comms_buffer">comms_buffer</a></code></li>
+<li><code><a title="UTM.constants.DroneSimContext.corridors" href="#UTM.constants.DroneSimContext.corridors">corridors</a></code></li>
+<li><code><a title="UTM.constants.DroneSimContext.dispatch" href="#UTM.constants.DroneSimContext.dispatch">dispatch</a></code></li>
+<li><code><a title="UTM.constants.DroneSimContext.get_containing_corridor" href="#UTM.constants.DroneSimContext.get_containing_corridor">get_containing_corridor</a></code></li>
+<li><code><a title="UTM.constants.DroneSimContext.get_containing_intersection" href="#UTM.constants.DroneSimContext.get_containing_intersection">get_containing_intersection</a></code></li>
+<li><code><a title="UTM.constants.DroneSimContext.intersections" href="#UTM.constants.DroneSimContext.intersections">intersections</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.MovementVector2D" href="#UTM.constants.MovementVector2D">MovementVector2D</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.MovementVector2D.direction" href="#UTM.constants.MovementVector2D.direction">direction</a></code></li>
+<li><code><a title="UTM.constants.MovementVector2D.getCoords" href="#UTM.constants.MovementVector2D.getCoords">getCoords</a></code></li>
+<li><code><a title="UTM.constants.MovementVector2D.nextMovementVector" href="#UTM.constants.MovementVector2D.nextMovementVector">nextMovementVector</a></code></li>
+<li><code><a title="UTM.constants.MovementVector2D.x" href="#UTM.constants.MovementVector2D.x">x</a></code></li>
+<li><code><a title="UTM.constants.MovementVector2D.y" href="#UTM.constants.MovementVector2D.y">y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.Orientation2D" href="#UTM.constants.Orientation2D">Orientation2D</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.Orientation2D.HORIZONTAL" href="#UTM.constants.Orientation2D.HORIZONTAL">HORIZONTAL</a></code></li>
+<li><code><a title="UTM.constants.Orientation2D.VERTICAL" href="#UTM.constants.Orientation2D.VERTICAL">VERTICAL</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.Point2D" href="#UTM.constants.Point2D">Point2D</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.Point2D.x" href="#UTM.constants.Point2D.x">x</a></code></li>
+<li><code><a title="UTM.constants.Point2D.y" href="#UTM.constants.Point2D.y">y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="UTM.constants.RNG" href="#UTM.constants.RNG">RNG</a></code></h4>
+<ul class="">
+<li><code><a title="UTM.constants.RNG.randint" href="#UTM.constants.RNG.randint">randint</a></code></li>
+<li><code><a title="UTM.constants.RNG.rng" href="#UTM.constants.RNG.rng">rng</a></code></li>
+<li><code><a title="UTM.constants.RNG.seed" href="#UTM.constants.RNG.seed">seed</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
