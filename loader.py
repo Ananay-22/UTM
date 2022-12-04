@@ -8,16 +8,17 @@
 # is moving away from start and 0 is moving towards start
 # .<name> specifies name of section parser
 
-# .2D
-# DIM 20 20
-# CORRIDOR H 0 9 20 2 2
-# CORRIDOR V 9 0 20 2 2
+"""
+.2D
+DIM 20 20
+CORRIDOR H 0 9 20 2 2
+CORRIDOR V 9 0 20 2 2
+"""
 
-
-from UTM.dispatcher import DispatchVertiport, ReceiveVertiport
-from UTM.drone import DroneState
-from UTM.map import Corridor2D, Map2D
-from UTM.constants import Dimension2D, MovementVector2D, Orientation2D, Action2D
+from dispatcher import DispatchUnit, ReceiveUnit
+from drone import DroneState
+from map import Corridor2D, Map2D
+from constants import Dimension2D, MovementVector2D, Orientation2D, Action2D
 
 def tokenize(line):
     return line.split(" ")
@@ -33,7 +34,7 @@ def _2D_parser(lines):
         if line[0] == "CORRIDOR":
             ret.corridors += [Corridor2D(Orientation2D(line[1]), *map(lambda s: int(s), line[2:]))]
         if line[0] == "DRONE":
-            goal = ReceiveVertiport(int(line[6]), int(line[7])) if len(line) == 8 else None
+            goal = ReceiveUnit(int(line[6]), int(line[7])) if len(line) == 8 else None
             drone_state = DroneState(MovementVector2D(*map(lambda s: int(s), line[1:3]), Action2D(line[3])), line[4], int(line[5]), goal)
             if goal:
                 if goal not in ret.goals:
@@ -42,7 +43,7 @@ def _2D_parser(lines):
             ret.drones_states += [drone_state]
         if line[0] == "DISPATCHER":
             #Todo: add generator, and receive unit support, random receive unit support too
-            ret.dispatchers += [DispatchVertiport(int(line[1]), int(line[2]), Action2D(line[3]))]
+            ret.dispatchers += [DispatchUnit(int(line[1]), int(line[2]), Action2D(line[3]))]
     ret.update_intersections()
     return ret
 parserLookup = {

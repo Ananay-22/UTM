@@ -1,4 +1,0 @@
-pdoc
-py2puml
-plantuml
-pygame

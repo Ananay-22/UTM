@@ -1,10 +1,7 @@
-# forward declare types
-from __future__ import annotations
-
-from UTM.agents import DroneAgent
-from UTM.comms import Packet, PacketHeader
-from UTM.constants import Action2D, DroneSimContext
-from UTM.drone import DroneStateContext
+from agents import DroneAgent
+from comms import Packet, PacketHeader
+from constants import Action2D, DroneSimContext
+from drone import DroneStateContext
 
 class CommunicationCapableAgent(DroneAgent):
     """
@@ -16,8 +13,7 @@ class CommunicationCapableAgent(DroneAgent):
     to the current Drone. However, in later versions of the simulation, there should be a feature to 
     modify which packet the driver can pick up and allow the drone to fetch for the agent. #TODO
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         """
         Demonstration of fact that the env_context.comms_buffer contains a list of packets
         """
@@ -49,7 +45,7 @@ class CommunicationCapableAgent(DroneAgent):
         """
         return drone_context.dir
 #TODO: maybe don't call this an agent
-class TurnRightAtIntersectionAgent(DroneAgent):
+class IntersectionRightAgent(DroneAgent):
     """
     A simple agent that is slightly more advanced than the inbuilt ForwardDroneAgent. 
     This one will detect when we are in an intersection and automatically move right.
@@ -58,8 +54,7 @@ class TurnRightAtIntersectionAgent(DroneAgent):
 
     When we enter the intersection, we will need to just turn right.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         """
         Simple method just checks if our drone is in any intersection.
         An alternative could be to just use:
@@ -83,9 +78,9 @@ class TurnRightAtIntersectionAgent(DroneAgent):
         """
         return drone_context.dir
 
-class TurnLeftAtIntersectionAgent(DroneAgent):
+class IntersectionLeftAgent(DroneAgent):
     """
-    A complex agent that is slightly more advanced than the TurnRightAtIntersectionAgent. 
+    A complex agent that is slightly more advanced than the IntersectionRightAgent. 
     This one will detect when we are in an intersection and automatically move left.
     Please use maps/intersection-left.map with this agent to prevent crashes due to drones not 
     reaching the goal. 
@@ -117,8 +112,7 @@ class TurnLeftAtIntersectionAgent(DroneAgent):
     This forces a long turn.
 
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         """
         This line just checks if the drone is in an intersection.
         DroneSimContext.get_containing_intersection will only return None when the drone is not in an intersection
@@ -165,37 +159,33 @@ class DFSAgent(DroneAgent):
     TODO: basic DFS implementation to show how to check legality of steps and perform known algos 
     TODO: demonstrate that storing data at the agent level is a mem leak -> will never get cleared.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         raise Exception("Unimplemented agent.")
 
 class BFSAgent(DroneAgent):
     """
     TODO: ask ananay for description, since it has not been put on the github rn.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         raise Exception("Unimplemented agent.")
 
 class AStarAgent(DroneAgent):
     """
     TODO: ask ananay for description, since it has not been put on the github rn.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         raise Exception("Unimplemented agent.")
 
 class DjikstrasAgent(DroneAgent):
     """
     TODO: ask ananay for description, since it has not been put on the github rn.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        drone_context, env_context = state
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         raise Exception("Unimplemented agent.")
 
 EXPORT = {
     "simulation-settings": {
-        "global-agent": TurnLeftAtIntersectionAgent
+        "global-agent": IntersectionLeftAgent
     },
     "main": {
         "map-file": "maps/intersection-left.map",

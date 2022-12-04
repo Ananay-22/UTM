@@ -1,32 +1,29 @@
-# forward declare types
-from __future__ import annotations
-
-from UTM.drone import DroneType
-from UTM.agents import DroneAgent
+from drone import DroneType
+from agents import DroneAgent
 class Cell:
     """
     Represents a single unit on the map.
     TODO: integrate with simulation. 
     """
     def __init__(self):
-        self.rainfall: float = 0
         """
             Represents rainfall in mm.
             TODO: check rainfall requirements (light rainfall should be okay with most drones).
         """
-        self.temperature: float = 25
+        self.rainfall = 0
         """
             Represents temperature in degrees C
             If it is not in the range 40F < temperature < 80F  then the drone would 
             have to activate self landing (known location nearest to the current location)
             # ideal temperature -> 60F
         """
-        self.windspeed: float = [0, 0]
+        self.temperature = 25
         """
             Represents windspeed in 
             TODO: check on windspeed that would affect drone (drone speed - 10 mph)
             TODO: check the windspeed is managed as a vector (for directionality)
         """
+        self.windspeed = [0, 0]
 
         # TODO: snowfall/ hailstorm??
 
@@ -34,11 +31,11 @@ class Cell:
     """
         Returns the probability of a drone moving into this cell. [0, 1] 
     """
-    def get_environment_potential(self, drone_type: DroneType) -> float:
+    def get_environment_potential(self, drone_type: DroneType):
         # rainfall_potential * temp_potential * wind_potential
         pass
 
-    def get_path_potential(self) -> float:
+    def get_path_potential(self):
         pass
 
 
@@ -51,7 +48,7 @@ class AirCell(Cell):
     def __init__(self) :
         self.drone = None
 
-    def is_empty(self) -> bool:
+    def is_empty(self) :
         return self.drone == None
 
     def add_drone(self, drone: DroneAgent):

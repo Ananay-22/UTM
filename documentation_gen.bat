@@ -1,0 +1,1 @@
+python -m pdoc --html %cd% -o %cd%\documentation

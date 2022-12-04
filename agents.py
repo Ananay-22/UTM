@@ -1,23 +1,18 @@
-# forward declare types
-from __future__ import annotations
-
-from UTM.constants import DroneSimContext
-from UTM.drone import DroneStateContext
+from comms import Packet, PacketHeader
+from constants import DroneSimContext
+from drone import DroneState, DroneStateContext
 
 class Agent:
-    """
-    Taking in a state, the agent should return the action to be taken.
-
-    Agent: entity in a program or environment capable of generating action.
-    An agent uses perception of the environment to make decisions about actions to take.
-    The perception capability is usually called a sensor.
-    The actions can depend on the most recent perception or on the entire history (percept sequence).
-        
-    https://www.cs.iusb.edu/~danav/teach/c463/3_agents.html
-    """
-    def getAction(self, state: any) -> Action2D:
+    def getAction(self, state):
         """
-        Given a state, return the appropriate action.
+        Taking in a state, the agent should return the action to be taken.
+
+        Agent: entity in a program or environment capable of generating action.
+        An agent uses perception of the environment to make decisions about actions to take.
+        The perception capability is usually called a sensor.
+        The actions can depend on the most recent perception or on the entire history (percept sequence).
+        
+        https://www.cs.iusb.edu/~danav/teach/c463/3_agents.html
         """
         raise NotImplementedError("Agent's getAction() function has not been implemented: " + self)
 
@@ -29,7 +24,7 @@ class DroneAgent(Agent):
 
     env_context will represent the state of the environment that the drone has sensed.
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
         raise NotImplementedError("DroneAgent's getAction() function has not been implemented: " + self)
 
 class ForwardDroneAgent(DroneAgent):
@@ -42,8 +37,5 @@ class ForwardDroneAgent(DroneAgent):
 
     Ideally a drone will use the sensor data and depending on the state it will return an action (using conditionals and more advanced constructs).
     """
-    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
-        """
-        Just return the direction the drone is going in, which is thought of as moving "Forward"
-        """
-        return state[0].dir
+    def getAction(self, drone_context: DroneStateContext, env_context: DroneSimContext):
+        return drone_context.dir
