@@ -1,6 +1,9 @@
-import pygame
-from constants import BLOCK_SIZE, BLACK, WHITE, WINDOW_WIDTH, WINDOW_HEIGHT, Action2D
+# forward declare types
+from __future__ import annotations
 
+import pygame
+from UTM.constants import BLOCK_SIZE, BLACK, WHITE, WINDOW_WIDTH, WINDOW_HEIGHT, Action2D, priorityImageMap
+import os
 if not pygame.get_init:
     pygame.init()
     
@@ -8,6 +11,8 @@ SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 CLOCK = pygame.time.Clock()
 
 DRAW_ARROWS = False
+
+IMG_CACHE = dict()
 
 
 # https://stackoverflow.com/questions/6339057/draw-a-transparent-rectangles-and-polygons-in-pygame
@@ -24,6 +29,14 @@ def drawAlphaCoordBlock(x, y, color=(*BLACK, 1), surface=SCREEN, border=0):
 
 def drawCoordBlock(x, y, color=BLACK, surface=SCREEN, border=0):
     pygame.draw.rect(surface, color, pygame.Rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), border)
+
+def drawDroneIcon(x, y, priority, surface=SCREEN):
+    if not priorityImageMap[priority] in IMG_CACHE:
+        IMG_CACHE[priorityImageMap[priority]] = pygame.image.load(os.path.join(priorityImageMap[priority]))
+        IMG_CACHE[priorityImageMap[priority]].convert()
+    image = IMG_CACHE[priorityImageMap[priority]] 
+
+    surface.blit(image, (x * BLOCK_SIZE, y * BLOCK_SIZE))
 
 
 def drawArrow(x, y, dir: Action2D, color=WHITE, surface=SCREEN, border=0):
