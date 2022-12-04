@@ -1,10 +1,10 @@
 # forward declare types
 from __future__ import annotations
 
-from agents import DroneAgent
-from comms import Packet, PacketHeader
-from constants import Action2D, DroneSimContext
-from drone import DroneStateContext
+from UTM.agents import DroneAgent
+from UTM.comms import Packet, PacketHeader
+from UTM.constants import Action2D, DroneSimContext
+from UTM.drone import DroneStateContext
 
 class CommunicationCapableAgent(DroneAgent):
     """

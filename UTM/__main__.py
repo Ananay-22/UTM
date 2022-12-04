@@ -1,12 +1,12 @@
 import pygame
-from drone import DroneState
-from loader import loadMaps
-from map import Map2D
-from render_util import drawAlphaRect
+from UTM.drone import DroneState
+from UTM.loader import loadMaps
+from UTM.map import Map2D
+from UTM.render_util import drawAlphaRect
 from time import sleep, time
-from constants import *
-from utils import blockPositiontoGridIndex
-from render_util import SCREEN, CLOCK
+from UTM.constants import *
+from UTM.utils import blockPositiontoGridIndex
+from UTM.render_util import SCREEN, CLOCK
 import sys
 
 class SimulationController:

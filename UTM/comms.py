@@ -1,7 +1,7 @@
 # forward declare types
 from __future__ import annotations
 
-from utils import uid
+from UTM.utils import uid
 
 class PacketHeader:
     """
@@ -10,12 +10,12 @@ class PacketHeader:
     
     For example, the source_id help identify which drone sent out the packet, and therefore prevent a drone from reading its own packet. 
     """
-    def __init__(self, source_id: str, id: str = "", ttl: int = 1):
+    def __init__(self, source_id: str, id: str = uid(), ttl: int = 1):
         self.source_id: str = source_id
         """
         Stores the ID of the drone that dispatched this packet.
         """
-        self.id: str = uid()
+        self.id: str = id
         """
         Store a unique identifier that can distinguish this packet from others.
         Helpful when packets persist in the communication fabric (using ttl) and a drone ID might have more than 1 packet associated with it.

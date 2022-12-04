@@ -1,18 +1,17 @@
 # forward declare types
 from __future__ import annotations
 
-from enum import Enum
 from itertools import combinations
-from agents import Agent, DroneAgent, ForwardDroneAgent
-from comms import CommunicationFabric
+from UTM.agents import Agent, DroneAgent, ForwardDroneAgent
+from UTM.comms import CommunicationFabric
 
-from constants import BLUE, GRAY, GREEN, PURPLE, RED, WHITE, Dimension2D, DroneSimContext, Orientation2D
-from computed import alphaFromZ
-from dispatcher import DispatchVertiport, ReceiveVertiport
-from drone import Action2D, DroneState, DroneStateContext, MemoryContext
+from UTM.constants import BLUE, GRAY, GREEN, PURPLE, RED, WHITE, Dimension2D, DroneSimContext, Orientation2D
+from UTM.computed import alphaFromZ
+from UTM.dispatcher import DispatchVertiport, ReceiveVertiport
+from UTM.drone import Action2D, DroneState, DroneStateContext, MemoryContext
 
-from render_util import drawAlphaCoordBlock, drawArrow, drawCoordBlock
-from utils import has
+from UTM.render_util import drawAlphaCoordBlock, drawArrow, drawCoordBlock
+from UTM.utils import has
 
 class Channel2D:
     """
@@ -93,7 +92,7 @@ class Corridor2D:
         The width of the corridor.
         """
         dir_parsed = f'{dir:0{width}b}'
-        self.channels: list[Channel2D] = [Channel2D(i, dir_parsed[i], self.orientation) for i in range(width)]
+        self.channels: "list[Channel2D]" = [Channel2D(i, dir_parsed[i], self.orientation) for i in range(width)]
         """
         A list of all the channels in the corridor.
         """
@@ -209,19 +208,19 @@ class Map2D:
     TODO: 2 ways of keeping track of a map: sparse and aircell. Currently Sparse implemented.
     """
     def __init__(self):
-        self.corridors: list[Corridor2D] = []
+        self.corridors: "list[Corridor2D]" = []
         """
         A list of all corridors in this map.
         """
-        self.dimension: Dimension2D = Dimension2D(0, 0)
+        self.dimension: "Dimension2D" = Dimension2D(0, 0)
         """
         The Dimensions of this map.
         """
-        self.intersections: list[Intersection] = []
+        self.intersections: "list[Intersection]" = []
         """
         A list of all the intersections of the map.
         """
-        self.drones_states: list[DroneState] = []
+        self.drones_states: "list[DroneState]" = []
         """
         A list of all the drone states present on the map.
         """
@@ -229,11 +228,11 @@ class Map2D:
         """
         The agent controlling the drone states on the map.
         """
-        self.dispatchers: list[DispatchVertiport] = []
+        self.dispatchers: "list[DispatchVertiport]" = []
         """
         A list of all the dispatcher vertiports in the map.
         """
-        self.goals: dict[ReceiveVertiport, list[DroneState]] = dict()
+        self.goals: "dict[ReceiveVertiport, list[DroneState]]" = dict()
         """
         A dictionary mapping all receiving vertiports to all drones that have that vertiport's coordinates as a goal.
         """
@@ -241,7 +240,7 @@ class Map2D:
         """
         The communication fabric on this map.
         """
-        self.mems: dict[str, MemoryContext] = dict()
+        self.mems: "dict[str, MemoryContext]" = dict()
         """
         The memory of all drones on this map.
         TODO: encapsulate in drone state

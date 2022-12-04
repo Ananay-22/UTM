@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 from random import randint
-from constants import WHITE, RNG, MovementVector2D
-from computed import alphaFromZ
-from drone import DroneState
-from render_util import drawAlphaCoordBlock
+from UTM.constants import WHITE, RNG, MovementVector2D
+from UTM.computed import alphaFromZ
+from UTM.drone import DroneState
+from UTM.render_util import drawAlphaCoordBlock
 
 class BinaryProbabilityDistribution:
     """
@@ -80,7 +80,7 @@ class DispatchVertiport:
     TODO: add drone destination properties.
     TODO: look into -> joby aviation, Bell Labs
     """
-    def __init__(self, x: int, y: int, dir: Direction2D, priority: int = 0, generator: BinaryProbabilityDistribution = BinaryPeriodicDistribution(5), name: str ="Dispatch Unit"):
+    def __init__(self, x: int, y: int, dir: "Direction2D", priority: int = 0, generator: BinaryProbabilityDistribution = BinaryPeriodicDistribution(5), name: str ="Dispatch Unit"):
         self.x: int = x
         """
         x coordinate of the vertiport on the map.
@@ -89,7 +89,7 @@ class DispatchVertiport:
         """
         y coordinate of the vertiport on the map.
         """
-        self.dir: Direction2D = dir
+        self.dir: "Direction2D" = dir
         """
         direction that the drones are spawned in.
         """

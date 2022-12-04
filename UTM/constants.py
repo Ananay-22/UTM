@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from enum import Enum
 import random
-from utils import getBlockSize, has
 
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)

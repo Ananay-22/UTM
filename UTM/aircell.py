@@ -1,8 +1,8 @@
 # forward declare types
 from __future__ import annotations
 
-from drone import DroneType
-from agents import DroneAgent
+from UTM.drone import DroneType
+from UTM.agents import DroneAgent
 class Cell:
     """
     Represents a single unit on the map.

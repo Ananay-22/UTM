@@ -2,11 +2,9 @@
 from __future__ import annotations
 
 from math import inf
-from computed import alphaFromZ
-from time import sleep
-from render_util import drawAlphaCoordBlock, drawDroneIcon
-from constants import *
-from utils import uid
+from UTM.render_util import drawDroneIcon
+from UTM.constants import *
+from UTM.utils import uid
 
 class DroneType:
     """

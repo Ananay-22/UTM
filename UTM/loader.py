@@ -14,10 +14,10 @@
 # CORRIDOR V 9 0 20 2 2
 
 
-from dispatcher import DispatchVertiport, ReceiveVertiport
-from drone import DroneState
-from map import Corridor2D, Map2D
-from constants import Dimension2D, MovementVector2D, Orientation2D, Action2D
+from UTM.dispatcher import DispatchVertiport, ReceiveVertiport
+from UTM.drone import DroneState
+from UTM.map import Corridor2D, Map2D
+from UTM.constants import Dimension2D, MovementVector2D, Orientation2D, Action2D
 
 def tokenize(line):
     return line.split(" ")

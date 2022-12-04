@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pygame
-from constants import BLOCK_SIZE, BLACK, WHITE, WINDOW_WIDTH, WINDOW_HEIGHT, Action2D, priorityImageMap
+from UTM.constants import BLOCK_SIZE, BLACK, WHITE, WINDOW_WIDTH, WINDOW_HEIGHT, Action2D, priorityImageMap
 import os
 if not pygame.get_init:
     pygame.init()
