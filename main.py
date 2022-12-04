@@ -9,25 +9,6 @@ from utils import blockPositiontoGridIndex
 from render_util import SCREEN, CLOCK
 import sys
 
-# DONE: instead of drawing after getting to_arr, have a SimulationState.draw() that draws
-#       without writing to an array
-# [legacy]
-# def drawGridArr(SimulationState):
-#     for x in range(0, SimulationState.dimension.width):
-#         for y in range(0, SimulationState.dimension.height):
-#             count = 0
-#             for element in SimulationState.to_arr()[y][x]:
-#                 color = color_lookup[element]
-#                 element = pygame.Rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
-#                 drawAlphaRect(SCREEN, (*color, 255 * (1 - count / len(SimulationState.to_arr()[y][x]))), element)
-#                 count += 1
-#             border = pygame.Rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
-#             pygame.draw.rect(SCREEN, WHITE, border, 1)
-
-
-
-#main()
-
 class SimulationController:
     def __init__(self):
         self.sim_speed = 1

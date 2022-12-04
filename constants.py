@@ -1,3 +1,6 @@
+# forward declare types
+from __future__ import annotations
+
 from enum import Enum
 import random
 from utils import getBlockSize, has
@@ -30,6 +33,12 @@ priorityColorMap = {
 Dictionary that will return the color of a drone based on it's priority. Replaced by priorityImageMap.
 """
 
+priorityImageMap = {
+    0: "./res/drone_icon.png"
+}
+"""
+Dictionary that will return the image of a drone based on it's priority.
+"""
 BLOCK_SIZE = 32
 """
 Pixel size of 1 block
