@@ -1,4 +1,7 @@
-from utils import uid
+# forward declare types
+from __future__ import annotations
+
+from UTM.utils import uid
 
 class PacketHeader:
     """
@@ -7,12 +10,12 @@ class PacketHeader:
     
     For example, the source_id help identify which drone sent out the packet, and therefore prevent a drone from reading its own packet. 
     """
-    def __init__(self, source_id, id = "", ttl = 1):
+    def __init__(self, source_id: str, id: str = uid(), ttl: int = 1):
         self.source_id: str = source_id
         """
         Stores the ID of the drone that dispatched this packet.
         """
-        self.id: str = uid()
+        self.id: str = id
         """
         Store a unique identifier that can distinguish this packet from others.
         Helpful when packets persist in the communication fabric (using ttl) and a drone ID might have more than 1 packet associated with it.
@@ -25,7 +28,7 @@ class PacketHeader:
         but since in the simulation we don't really have the concept of "time", we will 
         specify a ttl that is decremented every simulation iteration
         """
-        self.ttl = ttl
+        self.ttl: int = ttl
 
     def update(self):
         """
@@ -34,7 +37,7 @@ class PacketHeader:
         """
         self.ttl -= 1
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Source ID: {self.source_id}, Packet ID: {self.id}, TTL: {self.ttl}"
 
 class Packet: 
@@ -45,12 +48,12 @@ class Packet:
 
     Large packet sizes are not simulated, it is assumed the drone can transmit the entire packet into the communication fabric in one go.
     """
-    def __init__(self, header: PacketHeader, data):
+    def __init__(self, header: PacketHeader, data: any):
         self.header: PacketHeader = header
         """
         Header containing packet meta data.
         """
-        self.data = data
+        self.data: any = data
         """
         Data of packet, doesn't have a type or structure.
         """
@@ -62,7 +65,7 @@ class Packet:
         """
         self.header.update()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.header) + "\n====================\n" + str(self.data)
 
 class CommunicationFabric:
@@ -72,16 +75,16 @@ class CommunicationFabric:
 
     Drones dispatch packets into the fabric. Other drones fetch packets from the fabric. 
     """
-    def __init__(self, buffer_size = 1):
+    def __init__(self, buffer_size: int = 1):
         self.current_fabric: list[Packet] = []
         """
         Packets currently in the fabric.
         """
-        self.buffer_size = buffer_size
+        self.buffer_size: int = buffer_size
         """
         Number of iterations the buffer can store the packet history for.
         """
-        self.buffer = [] 
+        self.buffer: list[list[Packet]] = [] 
         """
         Stores a history of the packets in the fabric. 
         Mostly present to help debugging.
@@ -95,7 +98,7 @@ class CommunicationFabric:
         This will push the current fabric state onto the buffer, and truncate the oldest fabric state if the buffer size is exceeded.
         This will also update every packet in the current_fabric. If packet TTLs drop below 1 it will remove the packet from the current_fabric.
         """
-        new_fabric = []
+        new_fabric: list[Packet] = []
         for packet in self.current_fabric:
             if packet.header.ttl >= 1:
                 new_fabric += [packet]
@@ -112,7 +115,7 @@ class CommunicationFabric:
             return
         self.current_fabric += [packet]
 
-    def fetch(self, id: str):
+    def fetch(self, id: str) -> list[Packet]:
         """
         This method will return a list of packets that are appropriate for a drone with the given id.
         """
