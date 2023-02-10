@@ -126,7 +126,7 @@ def run(SimulationState, verifyRulesStrict = False):
         CLOCK.tick(60)
 
 if __name__ == "__main__":
-    from program import EXPORT
+    from UTM.program import EXPORT
     if type(EXPORT) != dict or not "main" in EXPORT or not "map-file" in EXPORT["main"]:
         print("Program did not export correct settings!\nSimulation Cannot be programmed.")
 
