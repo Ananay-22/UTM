@@ -5,6 +5,7 @@ from UTM.agents import DroneAgent
 from UTM.comms import Packet, PacketHeader
 from UTM.constants import Action2D, DroneSimContext
 from UTM.drone import DroneStateContext
+from UTM.kpi_utils import DataSink
 
 from functools import cmp_to_key as keyify
 
@@ -201,6 +202,7 @@ class IntersectionQueueResolverAgent(DroneAgent):
     """
     def __init__(self):
         self.threshold = 4
+        self.intersection_delay_sink = DataSink("intersection_delay")
 
     def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
         # this is not what we described in the protocol we made, it is a fix -> 
@@ -219,7 +221,7 @@ class IntersectionQueueResolverAgent(DroneAgent):
         if action == Action2D.SOUTH:
             newY += 1
         self.broadcast_packets({"id": state[0].id,"x": newX, "y": newY}, state[1].dispatch)
-
+        self.intersection_delay_sink.save()
         return action
 
         
@@ -228,6 +230,9 @@ class IntersectionQueueResolverAgent(DroneAgent):
         # TODO: i think drones are keeping track of older drones? do we need this? causes a stall/ buildup
         if "droneMap" not in drone_context.mem or True:
             drone_context.mem["droneMap"] = dict()
+
+        if "intersectionDelay" not in drone_context.mem:
+            drone_context.mem["intersectionDelay"] = 0
 
         # Rule: drones listen to env and get RID data 
         for i in env_context.comms_buffer:
@@ -258,11 +263,10 @@ class IntersectionQueueResolverAgent(DroneAgent):
             intersection.x + (intersection.breadth / 2),
             intersection.y + (intersection.length / 2)
         )
-        print(drone_context.id)
-        if self.distance(drone_context.x, drone_context.y, *intersection_center) <= 2 and not self.hasMovedOutOfIntersection(drone_context, intersection):
-            x = self.computeQueuePosition(drone_context, intersection_center)
-            print(x)
-            if x != 0 or self.isIntersectionLocked(intersection, drone_context.mem["droneMap"], drone_context):
+        if self.distance(drone_context.x, drone_context.y, *intersection_center) <= 3 and not self.hasMovedOutOfIntersection(drone_context, intersection):
+            drone_context.mem["intersectionDelay"] += 1
+            self.intersection_delay_sink.update(drone_context.id, drone_context.mem["intersectionDelay"])
+            if self.computeQueuePosition(drone_context, intersection_center) != 0 or self.isIntersectionLocked(intersection, drone_context.mem["droneMap"], drone_context):
                 # path planning kicks in during the intersection
                 return Action2D.NOP
         return drone_context.dir
@@ -302,7 +306,6 @@ class IntersectionQueueResolverAgent(DroneAgent):
             return drone2
 
         queue = sorted(queue, key=keyify(lambda x, y : -1 if compareDrones(x, y) == x else +1))
-        print("queue", [i["id"] for i in queue])
         for i in range(len(queue)):
             if queue[i]["id"] == drone_context.id:
                 return i

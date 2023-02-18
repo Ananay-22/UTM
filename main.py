@@ -7,6 +7,7 @@ from time import sleep, time
 from UTM.constants import *
 from UTM.utils import blockPositiontoGridIndex
 from UTM.render_util import SCREEN, CLOCK
+from UTM.kpi_utils import DataSink
 import sys
 
 class SimulationController:
@@ -126,9 +127,14 @@ def verify(SimulationState: Map2D, strict = False):
     
 
 
-def run(SimulationState, verifyRulesStrict = False):
+def run(SimulationState: Map2D, verifyRulesStrict = False):
     global SCREEN, CLOCK
     controller = SimulationController()
+
+    kpi_sinks = [DataSink("simulation_runtime"), DataSink("drone_uptime")]
+
+    [SimulationState.register_sink(i.name, i.update) for i in kpi_sinks]
+
     last = time()
     while True:
         render(SimulationState)
@@ -138,6 +144,7 @@ def run(SimulationState, verifyRulesStrict = False):
             cleanup(SimulationState)
             last = time()
         verify(SimulationState, verifyRulesStrict)
+        [i.save() for i in kpi_sinks]
         CLOCK.tick(60)
 
 if __name__ == "__main__":

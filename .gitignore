@@ -130,3 +130,6 @@ dmypy.json
 
 # documentation generated
 documentation/
+
+#simulation generated log files
+logs/
