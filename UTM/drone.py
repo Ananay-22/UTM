@@ -52,6 +52,10 @@ class DroneState:
         """
         Coordinate representing the final destination of the Drone. When this is None, it will be assumed that the drone is trying to exit the Map Area.
         """
+        self.uptime: int = 0
+        """
+        How long a drone has been running inside the simulation.
+        """
     
     def getCoords(self) -> Point2D:
         """
@@ -90,7 +94,7 @@ class DroneState:
         """
         Gracefully shuts down the drone.
         """
-        print("[SIM]", "Drone " + self.name + "[" + self.id + "]" + " shut down gracefully.")
+        print("[SIM]", "Drone " + self.name + "[" + self.id + "]" + " shut down gracefully in " + str(self.uptime) + " iters.")
 
 class MemoryContext(dict):
     """

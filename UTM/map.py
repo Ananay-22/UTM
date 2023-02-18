@@ -245,6 +245,17 @@ class Map2D:
         The memory of all drones on this map.
         TODO: encapsulate in drone state
         """
+        self.sinks: "dict[str, Callable[str, any, int], None]" = dict()
+        """
+        A table of all the data sinks used to collect KPI information. 
+        TODO: Update docs with list of available sink names
+        """
+        self.simulation_runtime: int = 0
+        """
+        Value that keeps track of how long our simulation has been running for.
+        Updated once every update() call.
+        Can be used as a simulation timestamp/ clock.
+        """
 
     def has(self, x: int, y: int) -> bool:
         """
@@ -329,6 +340,15 @@ class Map2D:
                     if channel and not self.get_containing_intersection(x, y):
                         drawArrow(x, y, channel.getDirection())
 
+    def validDroneSpot_drones(self, x, y, nearestDroneThreshold = 2):
+        # TODO: check the +1 for upper limit
+        for drone in self.drones_states:
+            if (
+                drone.getCoords().x - nearestDroneThreshold < x and drone.getCoords().x + nearestDroneThreshold + 1 > x 
+            and drone.getCoords().y - nearestDroneThreshold < y and drone.getCoords().y + nearestDroneThreshold + 1 > y
+            ): return False
+        
+        return True
 
     def update(self):
         """
@@ -342,16 +362,27 @@ class Map2D:
                 continue
             if drone_state.id not in self.mems:
                 self.mems[drone_state.id] = MemoryContext()
-            drone_state.applyAction(self.agent.getAction(DroneStateContext(drone_state, self.mems[drone_state.id]), DroneSimContext(drone_state, self)))
+            drone_state.applyAction(self.agent.getAction((DroneStateContext(drone_state, self.mems[drone_state.id]), DroneSimContext(drone_state, self))))
             # TODO: have drone push message onto fabric
+
+            drone_state.uptime += 1
+            if "drone_uptime" in self.sinks:
+                self.sinks["drone_uptime"](drone_state.id, drone_state.uptime, self.simulation_runtime)
+
         
         for dispatcher in self.dispatchers:
-            dispatched_drone = dispatcher.dispatch()
-            if dispatched_drone:
-                self.drones_states += [dispatched_drone]
-            dispatcher.update()
+            if self.validDroneSpot_drones(dispatcher.x, dispatcher.y):
+                dispatched_drone = dispatcher.dispatch()
+                if dispatched_drone:
+                    self.drones_states += [dispatched_drone]
+                dispatcher.update()
         
         self.comms.update()
+        self.simulation_runtime += 1
+        if "simulation_runtime" in self.sinks:
+            # 0 is the id of the primary map (currently only 1 map is supported)
+            self.sinks["simulation_runtime"](str(0), self.simulation_runtime, self.simulation_runtime)
+
 
     def set_global_agent(self, agent: DroneAgent):
         """
@@ -385,3 +416,5 @@ class Map2D:
                 del self.mems[drone.id]
             self.drones_states.remove(drone)
 
+    def register_sink(self, sink_name: str, data_sink: callable[[str, any, int], None]):
+        self.sinks[sink_name] = data_sink

@@ -5,6 +5,9 @@ from UTM.agents import DroneAgent
 from UTM.comms import Packet, PacketHeader
 from UTM.constants import Action2D, DroneSimContext
 from UTM.drone import DroneStateContext
+from UTM.kpi_utils import DataSink
+
+from functools import cmp_to_key as keyify
 
 class CommunicationCapableAgent(DroneAgent):
     """
@@ -193,12 +196,158 @@ class DjikstrasAgent(DroneAgent):
         drone_context, env_context = state
         raise Exception("Unimplemented agent.")
 
+class IntersectionQueueResolverAgent(DroneAgent):
+    """
+    TODO: time at intersection? should drones who have been waiting for a while be given priority?
+    """
+    def __init__(self):
+        self.threshold = 4
+        self.intersection_delay_sink = DataSink("intersection_delay")
+
+    def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
+        # this is not what we described in the protocol we made, it is a fix -> 
+        # basically instead of at the beginning of a simulation cycle we broadcast the current position
+        # at the end of the cycle we broadcast the position that will be the next position (intent instead of actual)
+        # this prevents drones from thinking the intersection is unlocked when actually another drone intended to go inside
+        # rising edge vs falling edge position update ( i feel like this is more expensive in the real world )
+        action = self._computeAction(state)
+        newX, newY = state[0].x, state[0].y
+        if action == Action2D.EAST:
+            newX += 1
+        if action == Action2D.WEST:
+            newX -= 1
+        if action == Action2D.NORTH:
+            newY -= 1
+        if action == Action2D.SOUTH:
+            newY += 1
+        self.broadcast_packets({"id": state[0].id,"x": newX, "y": newY}, state[1].dispatch)
+        self.intersection_delay_sink.save()
+        return action
+
+        
+    def _computeAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
+        drone_context, env_context = state
+        # TODO: i think drones are keeping track of older drones? do we need this? causes a stall/ buildup
+        if "droneMap" not in drone_context.mem or True:
+            drone_context.mem["droneMap"] = dict()
+
+        if "intersectionDelay" not in drone_context.mem:
+            drone_context.mem["intersectionDelay"] = 0
+
+        # Rule: drones listen to env and get RID data 
+        for i in env_context.comms_buffer:
+            if "x" in i.data and "y" in i.data:
+                drone_context.mem["droneMap"][i.header.source_id] = i.data
+
+        # Rule: if 2 prisms ahead of the current drone has another drone, current drone halts till the spot is free
+        for i in drone_context.mem["droneMap"]:
+            if drone_context.dir == Action2D.EAST or drone_context.dir == Action2D.WEST:
+                if abs(drone_context.mem["droneMap"][i]["x"] - drone_context.x) <= 2  and drone_context.mem["droneMap"][i]["y"] == drone_context.y:
+                    if drone_context.dir == Action2D.EAST and drone_context.x < drone_context.mem["droneMap"][i]["x"]:
+                        return Action2D.NOP
+                    elif drone_context.dir == Action2D.WEST and drone_context.x > drone_context.mem["droneMap"][i]["x"]:
+                        return Action2D.NOP
+            if drone_context.dir == Action2D.NORTH or drone_context.dir == Action2D.SOUTH:
+                if abs(drone_context.mem["droneMap"][i]["y"] - drone_context.y) <= 2  and drone_context.mem["droneMap"][i]["x"] == drone_context.x:
+                    if drone_context.dir == Action2D.NORTH and drone_context.y > drone_context.mem["droneMap"][i]["y"]:
+                        return Action2D.NOP
+                    elif drone_context.dir == Action2D.SOUTH and drone_context.y < drone_context.mem["droneMap"][i]["y"]:
+                        return Action2D.NOP
+
+        # Rule: When the current drone enters a threshold prism in the intersection, it will listen for RID data from all drones in that threshold distance at all lanes from that intersection 
+        #           The threshold is with respect to the center of intersection 
+        # TODO: make for n number of intersections
+        # TODO: the above rule was not correctly worded as drone is always looking for RID data for the 2 prism distance rule
+        intersection = env_context.intersections[0]
+        intersection_center = (
+            intersection.x + (intersection.breadth / 2),
+            intersection.y + (intersection.length / 2)
+        )
+        if self.distance(drone_context.x, drone_context.y, *intersection_center) <= 3 and not self.hasMovedOutOfIntersection(drone_context, intersection):
+            drone_context.mem["intersectionDelay"] += 1
+            self.intersection_delay_sink.update(drone_context.id, drone_context.mem["intersectionDelay"])
+            if self.computeQueuePosition(drone_context, intersection_center) != 0 or self.isIntersectionLocked(intersection, drone_context.mem["droneMap"], drone_context):
+                # path planning kicks in during the intersection
+                return Action2D.NOP
+        return drone_context.dir
+
+    def hasMovedOutOfIntersection(self, drone_context: DroneStateContext, intersection):
+        if drone_context.dir == Action2D.NORTH:
+            return drone_context.y < intersection.y
+        if drone_context.dir == Action2D.SOUTH:
+            return drone_context.y > intersection.y + intersection.length - 1
+        
+        if drone_context.dir == Action2D.WEST:
+            return drone_context.x < intersection.x
+        if drone_context.dir == Action2D.EAST:
+            return drone_context.x > intersection.x + intersection.breadth - 1
+
+    def computeQueuePosition(self, drone_context: DroneStateContext, intersection_center):
+        #TODO: get type incorporated
+        # no drones
+        if "droneMap" not in drone_context.mem:
+            return 0
+        if len(drone_context.mem["droneMap"].keys()) < 2:
+            return 0
+
+        queue = [{"id": i, "x": drone_context.mem["droneMap"][i]["x"], "y": drone_context.mem["droneMap"][i]["y"]} for i in drone_context.mem["droneMap"]]
+        queue += [{"id": drone_context.id, "x": drone_context.x, "y": drone_context.y}]
+        def compareDrones(drone1, drone2):
+            distance_diff = self.distance(drone1["x"], drone1["y"], *intersection_center) - self.distance(drone2["x"], drone2["y"], *intersection_center)
+            if distance_diff < 0:
+                return drone1
+            if distance_diff > 0:
+                return drone2
+
+            ## TODO: get number of current drones incorporated
+            ## TODO: get the time waited at the intersection incoporated
+            if drone1["id"] < drone2["id"]:
+                return drone1
+            return drone2
+
+        queue = sorted(queue, key=keyify(lambda x, y : -1 if compareDrones(x, y) == x else +1))
+        for i in range(len(queue)):
+            if queue[i]["id"] == drone_context.id:
+                return i
+        return len(queue)
+
+    def isIntersectionLocked(self, intersection, droneMap, drone_context):
+        for i in droneMap:
+            if i == drone_context.id:
+                continue
+            if intersection.has(droneMap[i]["x"], droneMap[i]["y"]):
+                return True
+        return False
+
+
+
+        
+    #TODO: this seems to be ruining the intersection model - cannot use euclidean distance!!
+    def distance(self, x1, y1, x2, y2):
+        return ((x1 - x2)**2 + (y1 - y2)**2) ** 0.5
+
+                
+
+    def broadcast_packets(self, drone_context: DroneStateContext, dispatcher):
+        dispatcher(
+            Packet (
+                PacketHeader (
+                    drone_context["id"]
+                ),
+                {
+                    "x": drone_context["x"],
+                    "y": drone_context["y"]
+                }
+            )
+        )
+
+
 EXPORT = {
     "simulation-settings": {
-        "global-agent": TurnLeftAtIntersectionAgent
+        "global-agent": IntersectionQueueResolverAgent
     },
     "main": {
-        "map-file": "maps/intersection-left.map",
+        "map-file": "maps/intersection-queue.map",
         "strict-verify": "simple"
     }
 }

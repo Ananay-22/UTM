@@ -222,7 +222,7 @@ class MovementVector2D:
         Does not update in place, but returns a new MovementVector
         """
         dx, dy = Action2D.to_vec(direction)
-        return MovementVector2D(self.x + dx, self.y + dy, direction)
+        return MovementVector2D(self.x + dx, self.y + dy, direction if direction != Action2D.NOP else self.direction)
 
 
 
