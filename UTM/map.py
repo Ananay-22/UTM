@@ -329,6 +329,15 @@ class Map2D:
                     if channel and not self.get_containing_intersection(x, y):
                         drawArrow(x, y, channel.getDirection())
 
+    def validDroneSpot_drones(self, x, y, nearestDroneThreshold = 2):
+        # TODO: check the +1 for upper limit
+        for drone in self.drones_states:
+            if (
+                drone.getCoords().x - nearestDroneThreshold < x and drone.getCoords().x + nearestDroneThreshold + 1 > x 
+            and drone.getCoords().y - nearestDroneThreshold < y and drone.getCoords().y + nearestDroneThreshold + 1 > y
+            ): return False
+        
+        return True
 
     def update(self):
         """
@@ -342,14 +351,15 @@ class Map2D:
                 continue
             if drone_state.id not in self.mems:
                 self.mems[drone_state.id] = MemoryContext()
-            drone_state.applyAction(self.agent.getAction(DroneStateContext(drone_state, self.mems[drone_state.id]), DroneSimContext(drone_state, self)))
+            drone_state.applyAction(self.agent.getAction((DroneStateContext(drone_state, self.mems[drone_state.id]), DroneSimContext(drone_state, self))))
             # TODO: have drone push message onto fabric
         
         for dispatcher in self.dispatchers:
-            dispatched_drone = dispatcher.dispatch()
-            if dispatched_drone:
-                self.drones_states += [dispatched_drone]
-            dispatcher.update()
+            if self.validDroneSpot_drones(dispatcher.x, dispatcher.y):
+                dispatched_drone = dispatcher.dispatch()
+                if dispatched_drone:
+                    self.drones_states += [dispatched_drone]
+                dispatcher.update()
         
         self.comms.update()
 
