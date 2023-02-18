@@ -133,3 +133,6 @@ documentation/
 
 #simulation generated log files
 logs/
+
+#proof of concept scripts
+poc*.py
