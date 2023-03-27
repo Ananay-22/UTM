@@ -89,11 +89,11 @@ def verify(SimulationState: Map2D, strict = False):
             for drone2 in SimulationState.drones_states:
                 if drone1 == drone2: continue
                 if (
-                    (abs(drone1.getCoords().x - drone2.getCoords().x) <= 1 and drone1.getCoords().y == drone2.getCoords().y)
+                    (abs(drone1.getCoords().x - drone2.getCoords().x) < 1 and drone1.getCoords().y == drone2.getCoords().y)
                     or 
-                    (abs(drone1.getCoords().y - drone2.getCoords().y) <= 1 and drone1.getCoords().x == drone2.getCoords().x)
+                    (abs(drone1.getCoords().y - drone2.getCoords().y) < 1 and drone1.getCoords().x == drone2.getCoords().x)
                 ):
-                    raise Exception("2 drones were closer than <2 aircells")
+                    raise Exception(f"2 drones were closer than <2 aircells at ({drone1.getCoords().x}, {drone1.getCoords().y})")
 
         for intersection in SimulationState.intersections:
             if [intersection.has(drone.getCoords().x, drone.getCoords().y) for drone in SimulationState.drones_states].count(True) > 1:
