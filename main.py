@@ -14,7 +14,7 @@ class SimulationController:
     def __init__(self):
         self.sim_speed = 1
         self.play = False
-        # TODO: make scree;;n and clock here so it can be passed into the SimulationState
+        # TODO: make screen and clock here so it can be passed into the SimulationState
 
 def render(SimulationState):
     global SCREEN
@@ -63,6 +63,7 @@ def cleanup(SimulationState: Map2D):
 
 # _prev_drone_states = {}
 def verify(SimulationState: Map2D, strict = False):
+    # raise Exception("Something went wrong...")
     # global _prev_drone_states
     # check if a drone moved off the map and that was not the goal
     if (not all([SimulationState.has(drone.getCoords().x, drone.getCoords().y) or not drone.goal for drone in SimulationState.drones_states])):

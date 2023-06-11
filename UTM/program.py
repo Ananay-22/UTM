@@ -203,6 +203,7 @@ class IntersectionQueueResolverAgent(DroneAgent):
     def __init__(self):
         self.threshold = 4
         self.intersection_delay_sink = DataSink("intersection_delay")
+        self.traffic_delay_sink = DataSink("traffic_delay")
 
     def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
         # this is not what we described in the protocol we made, it is a fix -> 
@@ -220,8 +221,10 @@ class IntersectionQueueResolverAgent(DroneAgent):
             newY -= 1
         if action == Action2D.SOUTH:
             newY += 1
-        self.broadcast_packets({"id": state[0].id,"x": newX, "y": newY}, state[1].dispatch)
+        self.broadcast_packets(state[0].id, {"x": newX, "y": newY, "intersectionDelay": state[0].mem["intersectionDelay"]}, state[1].dispatch)
         self.intersection_delay_sink.save()
+        self.traffic_delay_sink.save()
+        print("Drone result:", state[0].id, action)
         return action
 
         
@@ -234,6 +237,9 @@ class IntersectionQueueResolverAgent(DroneAgent):
         if "intersectionDelay" not in drone_context.mem:
             drone_context.mem["intersectionDelay"] = 0
 
+        if "trafficDelay" not in drone_context.mem:
+            drone_context.mem["trafficDelay"] = 0
+
         # Rule: drones listen to env and get RID data 
         for i in env_context.comms_buffer:
             if "x" in i.data and "y" in i.data:
@@ -241,17 +247,27 @@ class IntersectionQueueResolverAgent(DroneAgent):
 
         # Rule: if 2 prisms ahead of the current drone has another drone, current drone halts till the spot is free
         for i in drone_context.mem["droneMap"]:
+            if i == drone_context.id:
+                continue
             if drone_context.dir == Action2D.EAST or drone_context.dir == Action2D.WEST:
                 if abs(drone_context.mem["droneMap"][i]["x"] - drone_context.x) <= 2  and drone_context.mem["droneMap"][i]["y"] == drone_context.y:
                     if drone_context.dir == Action2D.EAST and drone_context.x < drone_context.mem["droneMap"][i]["x"]:
+                        drone_context.mem["trafficDelay"] += 1
+                        self.traffic_delay_sink.update(drone_context.id, drone_context.mem["trafficDelay"])
                         return Action2D.NOP
                     elif drone_context.dir == Action2D.WEST and drone_context.x > drone_context.mem["droneMap"][i]["x"]:
+                        drone_context.mem["trafficDelay"] += 1
+                        self.traffic_delay_sink.update(drone_context.id, drone_context.mem["trafficDelay"])
                         return Action2D.NOP
             if drone_context.dir == Action2D.NORTH or drone_context.dir == Action2D.SOUTH:
                 if abs(drone_context.mem["droneMap"][i]["y"] - drone_context.y) <= 2  and drone_context.mem["droneMap"][i]["x"] == drone_context.x:
                     if drone_context.dir == Action2D.NORTH and drone_context.y > drone_context.mem["droneMap"][i]["y"]:
+                        drone_context.mem["trafficDelay"] += 1
+                        self.traffic_delay_sink.update(drone_context.id, drone_context.mem["trafficDelay"])
                         return Action2D.NOP
                     elif drone_context.dir == Action2D.SOUTH and drone_context.y < drone_context.mem["droneMap"][i]["y"]:
+                        drone_context.mem["trafficDelay"] += 1
+                        self.traffic_delay_sink.update(drone_context.id, drone_context.mem["trafficDelay"])
                         return Action2D.NOP
 
         # Rule: When the current drone enters a threshold prism in the intersection, it will listen for RID data from all drones in that threshold distance at all lanes from that intersection 
@@ -264,9 +280,10 @@ class IntersectionQueueResolverAgent(DroneAgent):
             intersection.y + (intersection.length / 2)
         )
         if self.distance(drone_context.x, drone_context.y, *intersection_center) <= 3 and not self.hasMovedOutOfIntersection(drone_context, intersection):
+            rank = self.computeQueuePosition(drone_context, intersection_center)
             drone_context.mem["intersectionDelay"] += 1
             self.intersection_delay_sink.update(drone_context.id, drone_context.mem["intersectionDelay"])
-            if self.computeQueuePosition(drone_context, intersection_center) != 0 or self.isIntersectionLocked(intersection, drone_context.mem["droneMap"], drone_context):
+            if rank != 0 or self.isIntersectionLocked(intersection, drone_context.mem["droneMap"], drone_context):
                 # path planning kicks in during the intersection
                 return Action2D.NOP
         return drone_context.dir
@@ -289,23 +306,32 @@ class IntersectionQueueResolverAgent(DroneAgent):
             return 0
         if len(drone_context.mem["droneMap"].keys()) < 2:
             return 0
-
-        queue = [{"id": i, "x": drone_context.mem["droneMap"][i]["x"], "y": drone_context.mem["droneMap"][i]["y"]} for i in drone_context.mem["droneMap"]]
-        queue += [{"id": drone_context.id, "x": drone_context.x, "y": drone_context.y}]
+        
+        queue = [{"id": i, "x": drone_context.mem["droneMap"][i]["x"], "y": drone_context.mem["droneMap"][i]["y"], "intersectionDelay": drone_context.mem["droneMap"][i]["intersectionDelay"]} for i in drone_context.mem["droneMap"]]
+        queue += [{"id": drone_context.id, "x": drone_context.x, "y": drone_context.y, "intersectionDelay": drone_context.mem["intersectionDelay"]}]
         def compareDrones(drone1, drone2):
             distance_diff = self.distance(drone1["x"], drone1["y"], *intersection_center) - self.distance(drone2["x"], drone2["y"], *intersection_center)
-            if distance_diff < 0:
-                return drone1
-            if distance_diff > 0:
-                return drone2
-
+            
             ## TODO: get number of current drones incorporated
-            ## TODO: get the time waited at the intersection incoporated
+            
+            time_diff = drone1["intersectionDelay"] - drone2["intersectionDelay"]
+            if time_diff < 0:
+                return drone1
+            if time_diff > 0:
+                return drone2
+            
+            # if distance_diff < 0:
+            #     return drone1
+            # if distance_diff > 0:
+            #     return drone2
+
+
             if drone1["id"] < drone2["id"]:
                 return drone1
             return drone2
 
-        queue = sorted(queue, key=keyify(lambda x, y : -1 if compareDrones(x, y) == x else +1))
+        queue = sorted(queue, key=keyify(lambda x, y : +1 if compareDrones(x, y) == x else -1))
+        print("queue for ", drone_context.id, " is ", queue)
         for i in range(len(queue)):
             if queue[i]["id"] == drone_context.id:
                 return i
@@ -328,16 +354,13 @@ class IntersectionQueueResolverAgent(DroneAgent):
 
                 
 
-    def broadcast_packets(self, drone_context: DroneStateContext, dispatcher):
+    def broadcast_packets(self, id, data: any, dispatcher):
         dispatcher(
             Packet (
                 PacketHeader (
-                    drone_context["id"]
+                    id
                 ),
-                {
-                    "x": drone_context["x"],
-                    "y": drone_context["y"]
-                }
+                data
             )
         )
 
