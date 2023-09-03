@@ -1,11 +1,12 @@
 import datetime as dt
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 plt.ion()
 figure = plt.figure()
 subplot = 1
-BUFFER = 200
+BUFFER = 2000
 
 class Plotter:
     # def __init__(self, title, x_label, y_label):
@@ -88,6 +89,34 @@ class Plotter:
 
 
         # print(self.title, sum(self.ys) / len(self.ys))
+
+    def replot(self, x, y, colors = None):
+        self.frames += 1
+        self.xs = x
+        self.ys = y
+        # self.figure.clear()
+        # print(self.ani)
+        if self.frames >= BUFFER:
+            self.ax.cla()
+            self.ax.title.set_text(self.title)
+            if colors:
+                labels, index = np.unique(np.array(colors), return_inverse=True)
+                self.ax.scatter(self.xs, self.ys, c=index, cmap='hsv')
+                self.ax.tick_params(labelrotation=90)
+            else:
+                self.ax.scatter(self.xs, self.ys)
+                self.ax.tick_params(labelrotation=90)
+            plt.draw()
+            plt.gcf().canvas.draw_idle()
+            plt.gcf().canvas.start_event_loop(0.1)
+            self.frames = 0
+    
+        # self.figure.pause(0.001)
+        # print("plotted", i)
+
+
+        # print(self.title, sum(self.ys) / len(self.ys))
+
 
 
 def plot_cont(fun):

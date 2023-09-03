@@ -2,7 +2,7 @@ from UTM.data_viz import Plotter
 
 class TimeStampedValue:
     """Object representation of a value collected at a given timestamp"""
-    def __init__(self, timestamp: str, value: any):
+    def __init__(self, timestamp: int, value: any):
         self.timestamp = timestamp
         """The timestamp at which this value was collected"""
         self.value = value
@@ -19,7 +19,7 @@ class DataSink:
     A sink for data.
     Essentially this class collects data and writes them to a file once it's data has been updated update_freq times.
     """
-    def __init__(self, name: str, update_freq:int = 100):
+    def __init__(self, name: str, update_freq:int = 200000):
         self.name = name
         """The name of this sink, and also the name of the file this sink will save it's data at. File saves will automatically add a ".log" suffix."""
         self.sink = dict()
@@ -43,7 +43,35 @@ class DataSink:
             self.sink[id] = [TimeStampedValue(timestamp, value) if timestamp is not None else value]
         self.__num_updates += 1
 
-        self.plotter.update(id, value)
+        if self.plotter:
+            self.plot()
+
+        #self.plotter.update(id, value)
+    
+    def plot(self):
+        xs = []
+        ys = []
+        colors = []
+        for id in self.sink:
+            for i in range(len(self.sink[id])):
+                if type(self.sink[id][i]) == TimeStampedValue:
+                    xs += [self.sink[id][i].timestamp]
+                    ys += [self.sink[id][i].value]
+                    colors += [id]
+                else:
+                    xs += [i]
+                    ys += [self.sink[id][i]]
+                    colors += [id]
+        self.plotter.replot(*self.preprocess(xs, ys, colors))
+
+    def preprocess(self, xs, ys, colors):
+        return (xs, ys, colors)
+
+    # def preprocess(self, xs, ys, colors):
+    #     import pandas as pd
+    #     df = pd.DataFrame({'y': ys, 'id': colors})
+    #     df = df.groupby(['id']).std().reset_index()
+    #     return df['id'], df['y']
 
     def __repr__(self):
         return str(self.sink)

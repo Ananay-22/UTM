@@ -7,6 +7,8 @@ from UTM.constants import Action2D, DroneSimContext
 from UTM.drone import DroneStateContext
 from UTM.kpi_utils import DataSink
 
+import pandas as pd
+
 from functools import cmp_to_key as keyify
 
 class CommunicationCapableAgent(DroneAgent):
@@ -24,7 +26,7 @@ class CommunicationCapableAgent(DroneAgent):
         """
         Demonstration of fact that the env_context.comms_buffer contains a list of packets
         """
-        print([packet.header.source_id for packet in env_context.comms_buffer])
+        # print([packet.header.source_id for packet in env_context.comms_buffer])
 
         """
         Demonstration of how to dispatch packets. These will be available for the next iteration.
@@ -204,6 +206,12 @@ class IntersectionQueueResolverAgent(DroneAgent):
         self.threshold = 4
         self.intersection_delay_sink = DataSink("intersection_delay")
         self.traffic_delay_sink = DataSink("traffic_delay")
+        self.traffic_smoothness_sink = DataSink("traffic_smoothness")
+        def traffic_smoothness_calculator(xs, ys, colors):
+            df = pd.DataFrame({'y': ys, 'id': colors})
+            df = df.groupby(['id']).std().reset_index()
+            return df['id'], df['y']
+        self.traffic_smoothness_sink.preprocess = traffic_smoothness_calculator
 
     def getAction(self, state: tuple[DroneStateContext, DroneSimContext]) -> Action2D:
         # this is not what we described in the protocol we made, it is a fix -> 
@@ -222,9 +230,14 @@ class IntersectionQueueResolverAgent(DroneAgent):
         if action == Action2D.SOUTH:
             newY += 1
         self.broadcast_packets(state[0].id, {"x": newX, "y": newY, "intersectionDelay": state[0].mem["intersectionDelay"]}, state[1].dispatch)
+        
+        self.traffic_smoothness_sink.update(state[0].id, 0 if action == Action2D.NOP else 200)
+
+        
         self.intersection_delay_sink.save()
         self.traffic_delay_sink.save()
-        print("Drone result:", state[0].id, action)
+        self.traffic_smoothness_sink.save()
+        # print("Drone result:", state[0].id, action)
         return action
 
         
@@ -331,13 +344,14 @@ class IntersectionQueueResolverAgent(DroneAgent):
             return drone2
 
         queue = sorted(queue, key=keyify(lambda x, y : +1 if compareDrones(x, y) == x else -1))
-        print("queue for ", drone_context.id, " is ", queue)
+        # print("queue for ", drone_context.id, " is ", queue)
         for i in range(len(queue)):
             if queue[i]["id"] == drone_context.id:
                 return i
         return len(queue)
 
     def isIntersectionLocked(self, intersection, droneMap, drone_context):
+        print("hehe")
         for i in droneMap:
             if i == drone_context.id:
                 continue

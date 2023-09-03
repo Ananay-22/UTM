@@ -50,7 +50,7 @@ def input(SimulationState: Map2D, controller: SimulationController):
                 controller.play = not controller.play
 
             if event.key == pygame.K_SEMICOLON:
-                controller.sim_speed = min(30, controller.sim_speed + 1)
+                controller.sim_speed = min(10000, controller.sim_speed + 1000)
             if event.key == pygame.K_l:
                 controller.sim_speed = max( 1, controller.sim_speed - 1)
 
@@ -132,7 +132,8 @@ def run(SimulationState: Map2D, verifyRulesStrict = False):
     global SCREEN, CLOCK
     controller = SimulationController()
 
-    kpi_sinks = [DataSink("simulation_runtime"), DataSink("drone_uptime")]
+    # kpi_sinks = [DataSink("simulation_runtime"), DataSink("drone_uptime")]
+    kpi_sinks = [DataSink("drone_uptime")]
 
     [SimulationState.register_sink(i.name, i.update) for i in kpi_sinks]
 
