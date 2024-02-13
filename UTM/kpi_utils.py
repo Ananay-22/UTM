@@ -19,7 +19,7 @@ class DataSink:
     A sink for data.
     Essentially this class collects data and writes them to a file once it's data has been updated update_freq times.
     """
-    def __init__(self, name: str, update_freq:int = 200000):
+    def __init__(self, name: str, update_freq:int = 200, plotter = None):
         self.name = name
         """The name of this sink, and also the name of the file this sink will save it's data at. File saves will automatically add a ".log" suffix."""
         self.sink = dict()
@@ -28,7 +28,7 @@ class DataSink:
         """Internal variable counting the number of times the data in this sink has been updated"""
         self.update_freq = update_freq
         """Once data in the sink has been updated update_freq times, the file will be updated."""
-        self.plotter = Plotter(self.name, "Drone ID", "")
+        self.plotter = Plotter(self.name, "Drone ID", "", plotter)
 
     def update(self, id: str, value: any, timestamp: int = None):
         """
@@ -42,8 +42,8 @@ class DataSink:
         else:
             self.sink[id] = [TimeStampedValue(timestamp, value) if timestamp is not None else value]
         self.__num_updates += 1
-
-        if self.plotter:
+        # print("UPDATER", self.__num_updates, self.update_freq, self.__num_updates % self.update_freq == 0)
+        if self.plotter and self.__num_updates % self.update_freq == 0:
             self.plot()
 
         #self.plotter.update(id, value)
@@ -65,7 +65,10 @@ class DataSink:
         self.plotter.replot(*self.preprocess(xs, ys, colors))
 
     def preprocess(self, xs, ys, colors):
-        return (xs, ys, colors)
+        import pandas as pd
+        df = pd.DataFrame({'ys': ys, 'xs': xs})
+        df = df.groupby(['xs']).first().reset_index()
+        return (df['xs'], df['ys'], colors)
 
     # def preprocess(self, xs, ys, colors):
     #     import pandas as pd
@@ -85,7 +88,7 @@ class DataSink:
         force: when true it will force a write even if the __num_updates is not more than the update_freq
         """
         #TODO: change repr to use only append mode!!
-        if force or self.__num_updates > self.update_freq:
+        if force or self.__num_updates % self.update_freq == 0:
             with open("logs/" + self.name + ".log", "w") as f:
                 f.write(str(self))
 

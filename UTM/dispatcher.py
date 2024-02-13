@@ -23,7 +23,7 @@ class BinaryPeriodicDistribution(BinaryProbabilityDistribution):
     A BinaryPeriodicDistribution will generate a single true over a period given a probability value.
     A seed can optionally be provieded to control the sequence generated. 
     """
-    def __init__(self, period: float, prob:float = 0.3, seed:int =randint(0, 10000)):
+    def __init__(self, period: float, prob:float = 0.8, seed:int =randint(0, 10000)):
         self.period: float = period
         """
         The interval length for one true value.

@@ -204,11 +204,11 @@ class IntersectionQueueResolverAgent(DroneAgent):
     """
     def __init__(self):
         self.threshold = 4
-        self.intersection_delay_sink = DataSink("intersection_delay")
-        self.traffic_delay_sink = DataSink("traffic_delay")
-        self.traffic_smoothness_sink = DataSink("traffic_smoothness")
+        self.intersection_delay_sink = DataSink("intersection_delay", plotter=lambda ax, **kwargs1: lambda xs, ys, **kwargs2: ax.hist(ys))
+        self.traffic_delay_sink = DataSink("traffic_delay", plotter=lambda ax, **kwargs1: lambda xs, ys, **kwargs2: ax.hist(ys))
+        self.traffic_smoothness_sink = DataSink("traffic_smoothness", plotter=lambda ax, **kwargs1: lambda xs, ys, **kwargs2: ax.hist(ys))
         def traffic_smoothness_calculator(xs, ys, colors):
-            df = pd.DataFrame({'y': ys, 'id': colors})
+            df = pd.DataFrame({'y': ys, 'id': xs})
             df = df.groupby(['id']).std().reset_index()
             return df['id'], df['y']
         self.traffic_smoothness_sink.preprocess = traffic_smoothness_calculator
@@ -231,7 +231,7 @@ class IntersectionQueueResolverAgent(DroneAgent):
             newY += 1
         self.broadcast_packets(state[0].id, {"x": newX, "y": newY, "intersectionDelay": state[0].mem["intersectionDelay"]}, state[1].dispatch)
         
-        self.traffic_smoothness_sink.update(state[0].id, 0 if action == Action2D.NOP else 200)
+        self.traffic_smoothness_sink.update(state[0].id, 0 if action == Action2D.NOP else 1)
 
         
         self.intersection_delay_sink.save()
@@ -351,7 +351,6 @@ class IntersectionQueueResolverAgent(DroneAgent):
         return len(queue)
 
     def isIntersectionLocked(self, intersection, droneMap, drone_context):
-        print("hehe")
         for i in droneMap:
             if i == drone_context.id:
                 continue

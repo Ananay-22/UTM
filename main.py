@@ -133,7 +133,7 @@ def run(SimulationState: Map2D, verifyRulesStrict = False):
     controller = SimulationController()
 
     # kpi_sinks = [DataSink("simulation_runtime"), DataSink("drone_uptime")]
-    kpi_sinks = [DataSink("drone_uptime")]
+    kpi_sinks = [DataSink("drone_uptime", plotter=lambda ax, **kwargs1: lambda xs, ys, **kwargs2: ax.hist(ys))]
 
     [SimulationState.register_sink(i.name, i.update) for i in kpi_sinks]
 

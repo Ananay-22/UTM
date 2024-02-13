@@ -48,7 +48,7 @@ class Plotter:
 
     #     self._update()
 
-    def __init__(self, title, x_label, y_label):
+    def __init__(self, title, x_label, y_label, plotter_func=None):
         global subplot, figure
         self.title = title
         self.xs = []
@@ -59,7 +59,7 @@ class Plotter:
         self.plot_no = subplot
         self.frames = 0
         subplot += 1
-
+        self.plotter_func = self.ax.scatter if plotter_func is None else plotter_func(self.ax)
         # def _update(i):
         #     self.ax.clear()
         #     self.ax.plot(self.xs, self.ys)
@@ -77,8 +77,9 @@ class Plotter:
         self.ys += [y]
         # self.figure.clear()
         # print(self.ani)
-        if self.frames >= BUFFER:
-            self.ax.scatter(self.xs, self.ys)
+        # if self.frames >= BUFFER:
+        if True:
+            self.plotter_func(self.xs, self.ys)
             plt.draw()
             plt.gcf().canvas.draw_idle()
             plt.gcf().canvas.start_event_loop(0.1)
@@ -96,15 +97,16 @@ class Plotter:
         self.ys = y
         # self.figure.clear()
         # print(self.ani)
-        if self.frames >= BUFFER:
+        # if self.frames >= BUFFER:
+        if True:
             self.ax.cla()
             self.ax.title.set_text(self.title)
             if colors:
                 labels, index = np.unique(np.array(colors), return_inverse=True)
-                self.ax.scatter(self.xs, self.ys, c=index, cmap='hsv')
+                self.plotter_func(self.xs, self.ys, c=index, cmap='hsv')
                 self.ax.tick_params(labelrotation=90)
             else:
-                self.ax.scatter(self.xs, self.ys)
+                self.plotter_func(self.xs, self.ys)
                 self.ax.tick_params(labelrotation=90)
             plt.draw()
             plt.gcf().canvas.draw_idle()
