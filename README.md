@@ -14,8 +14,15 @@
 1. Traffic Rate
 2. Drone Velocity
 3. Minimum Distance between Drone
-4. Traffic Density: Total Number of Vehicles in the Air Space
-5. Weather Monitoring
+4. Traffic Density: How many total vehicles are there in the airspace in a given area.
+5. Weather Monitoring: Quantifiable
+
+## KPI
+1. Total Time to Travel: How much time it took for a vehicle to travel from the starting point to its destination?
+2. Intersection Delay: How long does the drone wait at an intersection?
+3. Total Delay: Drones waiting for other drones (2 space gap etc.)
+4. Base Time to Travel: How much time it will take to get to its end point without any other drones present.
+5. Weather Delay: need to define (think about how you are injecting weather, UVR - UAV Volume restriction, depends on number of cells needed to reroute)
 
 ## Cell Class
 
