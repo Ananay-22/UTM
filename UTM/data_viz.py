@@ -1,7 +1,9 @@
 import datetime as dt
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+matplotlib.use('TkAgg')
 
 plt.ion()
 figure = plt.figure()

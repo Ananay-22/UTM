@@ -3,3 +3,4 @@ py2puml
 plantuml
 pygame
 matplotlib
+pandas
